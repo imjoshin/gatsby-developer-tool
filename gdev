@@ -1,0 +1,26 @@
+#!/usr/bin/node
+const yargs = require("yargs");
+
+function sync(yargs) {
+  console.log("sync");
+  console.log(yargs);
+}
+
+yargs
+  .scriptName("gdev")
+  .usage("$0 <command> [arguments]")  
+  .command({
+    command: ["sync", "s"],
+    desc: "Sync your local gatsby repo to a directory - an alias of gatsby-dev with optional path",
+    builder: yargs =>
+      yargs.option("path", {
+        alias: "p",
+        type: "string",
+        default: undefined,
+        description: "the path to sync to, defaults to current directory",
+      }),
+    handler: sync,
+  })
+  .help()
+  .alias("help", "h")
+  .demandCommand(1).argv;
