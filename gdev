@@ -1,9 +1,20 @@
 #!/usr/bin/node
 const yargs = require("yargs");
+const fs = require("fs");
+const os = require("os");
+
+// TODO system validation for gatsby-dev and other packages
+
+function getGatsbyLocation() {
+  let config = fs.readFileSync(`${os.homedir()}/.config/configstore/gatsby-dev-cli.json`);
+  let json = JSON.parse(config);
+  return json["gatsby-location"]
+}
 
 function sync(yargs) {
   console.log("sync");
   console.log(yargs);
+  console.log(getGatsbyLocation());
 }
 
 yargs
@@ -11,7 +22,7 @@ yargs
   .usage("$0 <command> [arguments]")  
   .command({
     command: ["sync", "s"],
-    desc: "Sync your local gatsby repo to a directory - an alias of gatsby-dev with optional path",
+    desc: "Sync your local gatsby repo to a directory - an alias of gatsby-dev with an optional path.\nSee gatsby-dev -h for additional options.",
     builder: yargs =>
       yargs.option("path", {
         alias: "p",
@@ -20,6 +31,11 @@ yargs
         description: "the path to sync to, defaults to current directory",
       }),
     handler: sync,
+  })
+  .command({
+    command: ["cd"],
+    desc: "Move to your Gatsby repo.",
+    handler: cd,
   })
   .help()
   .alias("help", "h")
