@@ -32,11 +32,6 @@ yargs
       }),
     handler: sync,
   })
-  .command({
-    command: ["cd"],
-    desc: "Move to your Gatsby repo.",
-    handler: cd,
-  })
   .help()
   .alias("help", "h")
   .demandCommand(1).argv;
